@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { ChevronLeft, MenuIcon, Plus, PlusCircle, Search, Settings, Trash } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import React, { useRef, ElementRef, useState, useEffect } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import UserItem from "./UserItem";
@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/popover';
 import TrashBox from "./TrashBox";
 import { useSearch } from "@/hooks/use-search";
+import { useSettings } from "@/hooks/use-settings";
+import Navbar from "./Navbar";
 
 
 
@@ -23,7 +25,10 @@ const Navigation = () => {
 
     const isMobile = useMediaQuery("(max-width: 768px)");
     const pathname = usePathname();
+    const params = useParams();
+
     const search = useSearch();
+    const settings = useSettings();
 
     const isResizingRef = useRef(false);
     const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -141,7 +146,7 @@ const Navigation = () => {
                 <Item
                     label="Settings"
                     icon={Settings}
-                    onClick={() => { }}
+                    onClick={settings.onOpen}
                 />
                 <Item
                     onClick={handleCreate}
@@ -173,9 +178,15 @@ const Navigation = () => {
                 isMobile && "left-0 w-full"
             )}
         >
-            <nav>
-                {isCollapsed && <MenuIcon onClick={resetWidth} role="button" className="h-6 w-6 text-muted-foreground" />}
-            </nav>
+            {
+                !!params.documentId ? (
+                    <Navbar isCollapsed={isCollapsed} onResetWidth={resetWidth} />
+                ) : (
+                    <nav>
+                        {isCollapsed && <MenuIcon onClick={resetWidth} role="button" className="h-6 w-6 text-muted-foreground" />}
+                    </nav>
+                )
+            }
         </div>
     </>;
 };
