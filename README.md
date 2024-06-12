@@ -15,9 +15,9 @@ bun dev
 ```
 
 ## Implementation
-![Image1](1.jpg)
-![Image2](2.jpg)
-![Image3](3.jpg)
+![Image1](./public/1.jpg)
+![Image2](./public/2.jpg)
+![Image3](./public/3.jpg)
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
