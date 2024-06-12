@@ -305,3 +305,63 @@ export const update = mutation({
         return document;
     }
 })
+
+export const removeIcon = mutation({
+    args: {
+        id: v.id("documents")
+    },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if(!identity) {
+            return new Error("Unauthenticated");
+        }
+
+        const userId = identity.subject;
+
+        const existingDocument = await ctx.db.get(args.id);
+
+        if(!existingDocument) {
+            return new Error("Not Found");
+        }
+
+        if(existingDocument.userId !== userId) {
+            throw new Error("Not authorized");
+        }
+
+        const document = await ctx.db.patch(args.id, {
+            icon: undefined
+        })
+
+        return document;
+    }
+})
+
+export const removeImage = mutation({
+    args: {
+        id: v.id("documents")
+    }, 
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if(!identity) {
+            throw new Error("Unauthenticated");
+        }
+
+        const existingDocument = await ctx.db.get(args.id);
+
+        if(!existingDocument) {
+            throw new Error("Not Found");
+        }
+
+        if(existingDocument.userId !== identity.subject) {
+            throw new Error("Unauthorized");
+        }
+
+        const document = await ctx.db.patch(args.id, {
+            coverImage: undefined,
+        })
+
+        return document;
+    }
+})

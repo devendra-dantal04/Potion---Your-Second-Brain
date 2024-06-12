@@ -13,6 +13,7 @@ export const SettingModal = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const settings = useSettings();
 
+
     return (
         <Dialog open={settings.isOpen} onOpenChange={settings.onClose}>
             <DialogContent>
